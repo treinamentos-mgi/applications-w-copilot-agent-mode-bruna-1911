@@ -21,6 +21,8 @@ node .github/scripts/grade-step.mjs print-contract-hashes
 
 Copie a saída para `protectedContracts` em `.github/scripts/grade-step.mjs`.
 
+Na Etapa 2, a verificação estática aceita `idempotente` ou `idempotently` na descrição do contrato. O teste de contrato confirma a idempotência executando o seed duas vezes.
+
 Essas proteções evitam alterações acidentais ou geradas por IA, como o modo agent editando um teste ou script npm para fazê-lo passar. Elas não são uma defesa contra adulteração deliberada. As pessoas participantes são proprietárias da cópia do repositório, incluindo o avaliador e os workflows das etapas; portanto, a avaliação é um feedback formativo que libera a etapa seguinte, não uma avaliação protegida. O job de mantenedor `validate-exercise.yml` é executado somente no repositório de template.
 
 ## Lista de verificação para redefinição e publicação
