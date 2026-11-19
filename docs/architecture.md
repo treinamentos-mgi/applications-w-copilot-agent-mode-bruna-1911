@@ -53,7 +53,7 @@ flowchart LR
 
 ## Plano de testes
 
-- Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend` — 4 de 5 falharam: os modelos não exigem os campos obrigatórios de pessoas, equipes, atividades e treinos; o teste de seed idempotente passou.
+- Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend` — os modelos validam campos obrigatórios, duração e pontuação; o seed é idempotente e preserva registros e integrantes não relacionados.
 - Testes da API: `npm run test:api --prefix octofit-tracker/backend` — 4 de 4 falharam: entradas inválidas de atividades e equipes retornam 501 em vez de 400, o placar retorna vazio e a primeira sugestão não corresponde à atividade/meta esperada.
 - Testes do frontend: `npm test --prefix octofit-tracker/frontend` — 15 de 15 falharam: não são exibidos os dados retornados nem os estados de carregamento, vazio e erro acessível esperados; a solicitação de sugestões também não corresponde ao contrato.
 - Compilação do backend: `npm run build --prefix octofit-tracker/backend` — passou (`tsc --noEmit`).
