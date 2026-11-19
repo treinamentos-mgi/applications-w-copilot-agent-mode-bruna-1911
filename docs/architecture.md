@@ -43,22 +43,18 @@ flowchart LR
 
 ## Decisões de implementação
 
-Registre seu plano aqui antes de editar o código.
-
-- Decisão da camada de apresentação:
-- Decisão da camada de lógica:
-- Decisão da camada de dados:
-- Abordagem para registro de atividades:
-- Abordagem para gerenciamento de equipes:
-- Abordagem para o placar:
-- Abordagem para sugestões de treino:
+- Decisão da camada de apresentação: consumir a API pelo cliente compartilhado em `frontend/src`, usando caminhos `/api` e mantendo estados acessíveis de carregamento, vazio e erro.
+- Decisão da camada de lógica: manter validação e regras de negócio nas rotas e serviços Express; validar entradas e referências antes de persistir e responder com 4xx intencional para entradas ou recursos inválidos.
+- Decisão da camada de dados: definir campos obrigatórios, tipos e referências nos modelos Mongoose; manter o seed idempotente e operado pelos modelos da aplicação.
+- Abordagem para registro de atividades: validar formato e existência de `userId` e `teamId`, persistir as referências e os valores enviados, e calcular `points` e `occurredAt` no servidor.
+- Abordagem para gerenciamento de equipes: exigir `name`, preservar `name` e `mascot` e manter os integrantes como referências de pessoas; equipes sem integrantes começam com uma lista vazia.
+- Abordagem para o placar: somar os pontos das atividades por equipe, ordenar do maior total para o menor e atribuir posições iniciadas em 1.
+- Abordagem para sugestões de treino: localizar a pessoa pelo e-mail, considerar a meta e as atividades recentes para priorizar um treino compatível e explicar a recomendação em `reason`; retornar 4xx quando a pessoa não existir.
 
 ## Plano de testes
 
-Registre os comandos executados e o significado de cada falha.
-
-- Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend`
-- Testes da API: `npm run test:api --prefix octofit-tracker/backend`
-- Testes do frontend: `npm test --prefix octofit-tracker/frontend`
-- Compilação do backend: `npm run build --prefix octofit-tracker/backend`
-- Compilação do frontend: `npm run build --prefix octofit-tracker/frontend`
+- Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend` — 4 de 5 falharam: os modelos não exigem os campos obrigatórios de pessoas, equipes, atividades e treinos; o teste de seed idempotente passou.
+- Testes da API: `npm run test:api --prefix octofit-tracker/backend` — 4 de 4 falharam: entradas inválidas de atividades e equipes retornam 501 em vez de 400, o placar retorna vazio e a primeira sugestão não corresponde à atividade/meta esperada.
+- Testes do frontend: `npm test --prefix octofit-tracker/frontend` — 15 de 15 falharam: não são exibidos os dados retornados nem os estados de carregamento, vazio e erro acessível esperados; a solicitação de sugestões também não corresponde ao contrato.
+- Compilação do backend: `npm run build --prefix octofit-tracker/backend` — passou (`tsc --noEmit`).
+- Compilação do frontend: `npm run build --prefix octofit-tracker/frontend` — passou (`tsc --noEmit` e `vite build`).
