@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { getJson } from '../api/client.js';
 
 type State<T> =
   | { status: 'loading' }
@@ -9,28 +8,27 @@ type State<T> =
 type Props<T> = {
   title: string;
   description: string;
-  path: string;
-  responseKey: string;
+  loadItems: () => Promise<T[]>;
   emptyText: string;
   renderItem: (item: T) => ReactNode;
 };
 
-export function CapabilityCard<T>({ title, description, path, responseKey, emptyText, renderItem }: Props<T>) {
+export function CapabilityCard<T>({ title, description, loadItems, emptyText, renderItem }: Props<T>) {
   const [state, setState] = useState<State<T>>({ status: 'loading' });
 
   useEffect(() => {
     let active = true;
     setState({ status: 'loading' });
-    getJson<Record<string, T[]>>(path)
-      .then((response) => {
-        if (!Array.isArray(response?.[responseKey])) throw new Error('Resposta da API inválida');
-        if (active) setState({ status: 'success', items: response[responseKey] });
+    loadItems()
+      .then((items) => {
+        if (!Array.isArray(items)) throw new Error('Resposta da API inválida');
+        if (active) setState({ status: 'success', items });
       })
       .catch(() => {
         if (active) setState({ status: 'error' });
       });
     return () => { active = false; };
-  }, [path, responseKey]);
+  }, [loadItems]);
 
   return <section className="card h-100"><div className="card-body">
     <h2 className="h4">{title}</h2>

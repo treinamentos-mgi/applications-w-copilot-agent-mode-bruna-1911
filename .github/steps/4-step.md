@@ -41,7 +41,7 @@ A camada de apresentação deve mostrar os estados de carregamento, vazio, suces
 <summary>Está com dificuldades? 🤷</summary><br/>
 
 - Mantenha o cliente compartilhado da API em caminhos relativos `/api` (com substituição opcional por `import.meta.env.VITE_API_BASE_URL`). O proxy Vite encaminha as requisições para a porta 8000.
-- Mantenha a lógica de requisições fora dos componentes repetidos: cada componente de rota importa `getJson` de `src/api/client.ts` e nunca chama `fetch` diretamente.
+- Cada componente de rota deve importar e chamar `getJson` de `src/api/client.ts`, sem usar `fetch` diretamente. Os estados de carregamento, vazio, sucesso e erro podem ficar em um componente compartilhado.
 - Confira os nomes acessíveis e as mensagens semânticas de status/erro quando os testes falharem.
 
 </details>
