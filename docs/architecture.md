@@ -44,6 +44,7 @@ flowchart LR
 ## Decisões de implementação
 
 - Decisão da camada de apresentação: consumir a API pelo cliente compartilhado em `frontend/src`, usando caminhos `/api` e mantendo estados acessíveis de carregamento, vazio e erro.
+- As sugestões exibidas na interface usam a pessoa de demonstração `mona@example.com`, sem autenticação ou seleção de pessoa.
 - Decisão da camada de lógica: manter validação e regras de negócio nas rotas e serviços Express; validar entradas e referências antes de persistir e responder com 4xx intencional para entradas ou recursos inválidos.
 - Decisão da camada de dados: definir campos obrigatórios, tipos e referências nos modelos Mongoose; manter o seed idempotente e operado pelos modelos da aplicação.
 - Abordagem para registro de atividades: validar formato e existência de `userId` e `teamId`, persistir as referências e os valores enviados, e calcular `points` e `occurredAt` no servidor.
@@ -55,6 +56,6 @@ flowchart LR
 
 - Testes da camada de dados: `npm run test:data --prefix octofit-tracker/backend` — os modelos validam campos obrigatórios, duração e pontuação; o seed é idempotente e preserva registros e integrantes não relacionados.
 - Testes da API: `npm run test:api --prefix octofit-tracker/backend` — 4 de 4 falharam: entradas inválidas de atividades e equipes retornam 501 em vez de 400, o placar retorna vazio e a primeira sugestão não corresponde à atividade/meta esperada.
-- Testes do frontend: `npm test --prefix octofit-tracker/frontend` — 15 de 15 falharam: não são exibidos os dados retornados nem os estados de carregamento, vazio e erro acessível esperados; a solicitação de sugestões também não corresponde ao contrato.
+- Testes do frontend: `npm test --prefix octofit-tracker/frontend` — verificam os dados retornados, os estados de carregamento, vazio e erro acessível, e a solicitação de sugestões para a pessoa de demonstração.
 - Compilação do backend: `npm run build --prefix octofit-tracker/backend` — passou (`tsc --noEmit`).
 - Compilação do frontend: `npm run build --prefix octofit-tracker/frontend` — passou (`tsc --noEmit` e `vite build`).
