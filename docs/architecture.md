@@ -43,15 +43,13 @@ flowchart LR
 
 ## Decisões de implementação
 
-Registre seu plano aqui antes de editar o código.
-
-- Decisão da camada de apresentação:
-- Decisão da camada de lógica:
-- Decisão da camada de dados:
-- Abordagem para registro de atividades:
-- Abordagem para gerenciamento de equipes:
-- Abordagem para o placar:
-- Abordagem para sugestões de treino:
+- Decisão da camada de apresentação: React 19, React Router e Bootstrap exibem os recursos; o cliente compartilhado acessa a API por caminhos `/api`, encaminhados pelo proxy do Vite.
+- Decisão da camada de lógica: rotas Express em TypeScript delegam regras a serviços explícitos, validam entradas e retornam respostas 4xx intencionais para dados inválidos.
+- Decisão da camada de dados: esquemas e modelos Mongoose persistem os dados no MongoDB privado; a carga de demonstração usa upserts para ser repetível sem apagar registros existentes.
+- Abordagem para registro de atividades: validar os IDs de pessoa e equipe e os dados da atividade, associar os registros existentes e calcular pontos e data no servidor.
+- Abordagem para gerenciamento de equipes: validar o nome, preservar nome e mascote informados e manter as associações de integrantes consistentes ao criar ou atualizar equipes.
+- Abordagem para o placar: somar os pontos das atividades por equipe, ordenar do maior total para o menor e atribuir posições começando em 1.
+- Abordagem para sugestões de treino: localizar a pessoa pelo e-mail seed, considerar metas ou atividades recentes e explicar a recomendação no campo `reason`.
 
 ## Plano de testes
 

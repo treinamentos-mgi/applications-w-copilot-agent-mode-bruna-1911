@@ -61,8 +61,9 @@ test('copy link points to this template and review images use the template asset
   assert.throws(() => validateExercise(wrongImage), /Review images must come from the exercise-template/);
 });
 
-test('starter scaffold does not pass learner grading before implementation', () => {
-  for (const name of ['step1-architecture', 'step2-data', 'step3-api', 'step4-frontend']) {
+test('completed architecture passes step 1 while the remaining scaffold steps need work', () => {
+  assert.doesNotThrow(() => checks['step1-architecture'](repositoryRoot));
+  for (const name of ['step2-data', 'step3-api', 'step4-frontend']) {
     assert.throws(() => checks[name](repositoryRoot));
   }
 });
@@ -249,10 +250,11 @@ test('workflow-level write permissions are rejected', () => {
 
 test('etapa um exige um plano de arquitetura preenchido', () => {
   const root = copyAll();
-  assert.throws(() => checks['step1-architecture'](root), /Architecture plan must complete/);
   const architecture = path.join(root, 'docs/architecture.md');
-  fs.writeFileSync(architecture, fs.readFileSync(architecture, 'utf8').replaceAll(/^(- .+):\s*$/gm, '$1: Aplicar os contratos e preservar os limites entre camadas.'));
   assert.doesNotThrow(() => checks['step1-architecture'](root));
+  const completedPlan = fs.readFileSync(architecture, 'utf8');
+  fs.writeFileSync(architecture, completedPlan.replace(/^- Decisão da camada de apresentação:.*$/m, '- Decisão da camada de apresentação:'));
+  assert.throws(() => checks['step1-architecture'](root), /Architecture plan must complete Decisão da camada de apresentação/);
 });
 
 test('data grader rejects placeholder seed script', () => {
